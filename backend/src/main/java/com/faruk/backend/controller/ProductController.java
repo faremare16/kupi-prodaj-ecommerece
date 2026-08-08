@@ -30,27 +30,22 @@ public class ProductController {
         return productService.saveProduct(product);
     }
 
-    @PostMapping
-    public Product updateProduct(@RequestBody Product product){
-        return productService.updateProduct(product);
-    }
-
     @DeleteMapping
     public Product deleteProduct(@RequestBody Product product){
         return productService.saveProduct(product);
     }
 
-    @DeleteMapping
-    public void deleteProductById(@RequestBody Long id){
+    @DeleteMapping("/{id}")
+    public void deleteProductById(@PathVariable Long id){
         productService.deleteProductById(id);
     }
 
-    @GetMapping
+    @GetMapping("/search/name")
     public List<Product> searchProductByName(@RequestParam String name){
         return productService.searchProductByName(name);
     }
 
-    @GetMapping
+    @GetMapping("/search/category")
     public List<Product> searchProductByCategoryId(@RequestParam Long categoryId){
         return productService.searchProductByCategoryId(categoryId);
     }

@@ -28,10 +28,6 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Product product){
-        return productRepository.save(product);
-    }
-
     public void deleteProductById(Long id){
         if(!productRepository.existsById(id)){
             throw new RuntimeException("Product not found");
