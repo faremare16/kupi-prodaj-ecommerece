@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // definise sve rute koje su javne
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
 
                         // sve ostale moraju biti zakljucane i traziti token
                         .anyRequest().authenticated()

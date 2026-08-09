@@ -30,10 +30,6 @@ public class AuthenticationService {
 
     // registracija
     public AuthenticationResponse register(RegisterRequest registerRequest) {
-        // ako se password i confirm password ne poklapaju
-        if(!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())){
-            throw new RuntimeException("Passwords do not match");
-        }
 
         Role role = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Role Not Found"));
