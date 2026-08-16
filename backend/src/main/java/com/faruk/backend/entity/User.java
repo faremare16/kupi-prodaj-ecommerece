@@ -40,7 +40,9 @@ public class User implements UserDetails {
 
     private Date dateCreated;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    private String profileImageUrl;
+
+    @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name="user_roles",
             joinColumns = @JoinColumn(name="user_id"),
@@ -55,12 +57,13 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public String getUsername(){
-        return email;
-    }
-
     public String getPassword(){
         return password;
+    }
+
+    @Override
+    public String getUsername(){
+        return username;
     }
 
 }

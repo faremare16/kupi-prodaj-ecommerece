@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { finalize } from 'rxjs';
 
-
 @Component({
   selector: 'app-register',
   imports: [CommonModule, FormsModule],

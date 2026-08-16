@@ -1,0 +1,7 @@
+body {
+  background-color: #121212; /* Duboka tamna pozadina */
+  color: #e0e0e0;            /* Svijetli tekst da se vidi */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}

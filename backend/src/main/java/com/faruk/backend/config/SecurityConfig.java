@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,15 +25,16 @@ public class SecurityConfig {
         http
                 // iskljucujemo CSRF zastitu jer se koristi jwt token
                 .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
 
                 // konfigurisemo pravila pristupa ruti
                 .authorizeHttpRequests(auth -> auth
-
-                        // definise sve rute koje su javne
-                        .requestMatchers("/api/auth/**").permitAll()
-
-                        // sve ostale moraju biti zakljucane i traziti token
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/v1/auth/**").permitAll() // definise sve rute koje su javne
+                        .requestMatchers("/api/v1/products/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/api/v1/profile/**").authenticated()
+                        .requestMatchers("/api/v1/users/me").authenticated()
+                        .anyRequest().authenticated() // sve ostale moraju biti zakljucane i traziti token
                 )
 
                 // nema cuvanja sesija na serveru sve je preko tokena

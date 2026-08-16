@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -27,11 +27,6 @@ public class ProductController {
 
     @PostMapping
     public Product createProduct(@RequestBody Product product){
-        return productService.saveProduct(product);
-    }
-
-    @DeleteMapping
-    public Product deleteProduct(@RequestBody Product product){
         return productService.saveProduct(product);
     }
 

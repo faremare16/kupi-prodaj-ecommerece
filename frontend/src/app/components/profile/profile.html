@@ -1,0 +1,115 @@
+<div class="container-fluid min-vh-100 bg-dark text-light py-5 px-lg-5 px-3">
+  <div class="container-xxl">
+    
+    <!-- Header / Title -->
+    <div class="row mb-4 align-items-center">
+      <div class="col text-center text-md-start">
+        <h2 class="fw-bold text-white mb-1">My Profile</h2>
+        <p class="text-secondary small mb-0">Manage your account information and settings</p>
+      </div>
+    </div>
+
+    <!-- Main Card Layout -->
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card bg-black border border-secondary rounded-4 p-4 p-md-5 shadow-sm text-light">
+          
+          <!-- VIEW MODE -->
+          <div *ngIf="!isEditing">
+            <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4 pb-4 border-bottom border-secondary border-opacity-50">
+              <div class="position-relative">
+                <!-- Spajamo backend URL sa imageUrl iz baze, a fallback je u public folderu -->
+                <img [src]="user?.profileImageUrl ? 'http://127.0.0.1:8080' + user?.profileImageUrl : 'default-avatar.png'" 
+                      class="rounded-circle object-fit-cover border border-secondary shadow-sm" 
+                      style="width: 120px; height: 120px;" 
+                      alt="Avatar"
+                      (error)="onImageError()">
+              </div>
+              <div class="text-center text-md-start">
+                <h3 class="fw-bold text-white mb-1">{{ user?.username }}</h3>
+                <p class="text-secondary mb-2">{{ user?.email }}</p>
+                <span class="badge bg-dark border border-secondary text-success px-3 py-2 rounded-pill">Active Account</span>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <div class="p-3 bg-dark border border-secondary rounded-3">
+                  <span class="text-secondary small d-block">Username</span>
+                  <span class="fw-semibold text-light">{{ user?.username }}</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 bg-dark border border-secondary rounded-3">
+                  <span class="text-secondary small d-block">Email Address</span>
+                  <span class="fw-semibold text-light">{{ user?.email }}</span>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="p-3 bg-dark border border-secondary rounded-3">
+                  <span class="text-secondary small d-block">Phone Number</span>
+                  <span class="fw-semibold text-light">{{ user?.phoneNumber || 'Not provided' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-success px-4 rounded-pill fw-semibold shadow-sm" style="background-color: #238636; border-color: #2ea043;" (click)="toggleEdit()">
+                Uredi profil
+              </button>
+            </div>
+          </div>
+
+          <!-- EDIT MODE -->
+          <div *ngIf="isEditing">
+            <h4 class="fw-bold text-white mb-4">Edit Profile</h4>
+
+            <div class="text-center mb-4">
+              <div class="position-relative d-inline-block mb-3">
+                <img [src]="editData.profileImageUrl || 'default-avatar.png'" 
+                     class="rounded-circle object-fit-cover border border-secondary shadow-sm" 
+                     style="width: 120px; height: 120px;" 
+                     alt="Preview">
+              </div>
+              <div>
+                <label class="btn btn-dark border border-secondary btn-sm rounded-pill px-4 text-light cursor-pointer shadow-sm">
+                  Choose New Image
+                  <input type="file" (change)="onFileSelected($event)" accept="image/*" class="d-none">
+                </label>
+              </div>
+              <div *ngIf="imageError" class="text-danger small mt-2">
+                {{ imageError }}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label text-secondary small">Username</label>
+              <input type="text" class="form-control bg-dark text-light border-secondary shadow-none rounded-3 py-2" [(ngModel)]="editData.username" name="username">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label text-secondary small">Email Address</label>
+              <input type="email" class="form-control bg-dark text-light border-secondary shadow-none rounded-3 py-2" [(ngModel)]="editData.email" name="email">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label text-secondary small">Phone Number</label>
+              <input type="text" class="form-control bg-dark text-light border-secondary shadow-none rounded-3 py-2" [(ngModel)]="editData.phoneNumber" name="phoneNumber">
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+              <button class="btn btn-outline-secondary px-4 rounded-pill fw-semibold" (click)="toggleEdit()">
+                Cancel
+              </button>
+              <button class="btn btn-success px-4 rounded-pill fw-semibold shadow-sm" style="background-color: #238636; border-color: #2ea043;" (click)="saveProfile()">
+                Save
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

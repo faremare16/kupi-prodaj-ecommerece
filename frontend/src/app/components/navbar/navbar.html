@@ -1,0 +1,24 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/products">KupiProdaj</a>
+  </div>
+
+  <div class="navbar-menu">
+    <a routerLink="/products">Products</a>
+    <a routerLink="/add-product">Add item</a>
+  </div>
+
+  <div class="navbar-profile" *ngIf="isLoggedIn()">
+    <div class="profile-circle" (click)="toggleDropdown()">
+      <span *ngIf="!userProfileImage">{{ getUserInitials() }}</span>
+      <img *ngIf="userProfileImage" [src]="userProfileImage" alt="Profile picture" />
+    </div>
+
+    <div class="dropdown-menu" *ngIf="dropdownOpen">
+      <a routerLink="/profile" class="profile-badge" title="Moj profil">
+        My profile
+      </a>
+      <button (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>

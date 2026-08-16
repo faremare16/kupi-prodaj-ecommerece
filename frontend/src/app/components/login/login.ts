@@ -25,9 +25,10 @@ export class LoginComponent {
         this.cdr.detectChanges();
       })
     ).subscribe({
-      next: (resposne)=>{
-        console.log('Login succesfull', resposne);
-        this.router.navigate(['/']);
+      next: (response)=>{
+        console.log('Login succesfull', response);
+        localStorage.setItem('authToken', response.token);
+        this.router.navigate(['/product-list']);
       },
       error: (err)=>{
         if(err.error && typeof err.error==='string'){
