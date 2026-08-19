@@ -1,11 +1,13 @@
 package com.faruk.backend.dto;
 
+import com.faruk.backend.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Builder
 @AllArgsConstructor
@@ -19,4 +21,6 @@ public class ProductResponseDto {
     private Long unitsInStock;
     private String imageUrl;
     private String username;
+    private Date datePublished;
+    private Category category;
 }

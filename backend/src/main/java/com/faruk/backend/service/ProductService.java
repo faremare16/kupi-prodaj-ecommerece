@@ -7,7 +7,6 @@ import com.faruk.backend.entity.User;
 import com.faruk.backend.repository.CategoryRepository;
 import com.faruk.backend.repository.ProductRepository;
 import com.faruk.backend.repository.UserRepository;
-import lombok.Builder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,6 +61,8 @@ public class ProductService {
                 .unitsInStock(product.getUnitsInStock())
                 .imageUrl(product.getImageUrl())
                 .username(ownerUsername)
+                .category(product.getCategory())
+                .datePublished(product.getDatePublished())
                 .build();
     }
 
@@ -138,6 +139,8 @@ public class ProductService {
                     .unitsInStock(product.getUnitsInStock())
                     .imageUrl(product.getImageUrl())
                     .username(ownerUsername)
+                    .category(product.getCategory())
+                    .datePublished(product.getDatePublished())
                     .build();
         }).collect(Collectors.toList());
     }

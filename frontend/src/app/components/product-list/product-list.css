@@ -20,3 +20,17 @@
   background-color: rgba(255, 255, 255, 0.05) !important;
   color: #ffffff !important;
 }
+
+.search-input::placeholder {
+  color: #a0a0a0 !important; /* Stavi boju koju želiš za placeholder */
+  opacity: 1; /* Obavezno za neke pretraživače poput Firefoxa da primjene punu boju */
+}
+
+/* Za starije verzije pretraživača zlu ne trebalo */
+.search-input::-webkit-input-placeholder {
+  color: #a0a0a0 !important;
+}
+.search-input::-moz-placeholder {
+  color: #a0a0a0 !important;
+  opacity: 1;
+}

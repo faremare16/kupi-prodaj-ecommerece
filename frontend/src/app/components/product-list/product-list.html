@@ -1,24 +1,24 @@
 <div class="container-fluid min-vh-100 bg-dark text-light py-5 px-lg-5 px-3">
-  <div class="container-xxl">
-    
+  
     <!-- Header / Branding Title -->
     <div class="row mb-4 align-items-center">
-      <div class="col text-center text-md-start">
+      <div class="col text-start">
         <h2 class="fw-bold text-white mb-1">Explore Marketplace</h2>
         <p class="text-secondary small mb-0">Find the best hardware, gear, and components</p>
       </div>
     </div>
 
-    <!-- Top Bar: Search -->
+    <!-- Top Bar: Search (Poravnato lijevo, nema mx-auto) -->
     <div class="row mb-4">
-      <div class="col-lg-8 mx-auto">
+      <div class="col-lg-6 col-md-8">
         <div class="input-group input-group-lg shadow-sm">
-          <span class="input-group-text bg-black text-secondary border-secondary border-end-0 rounded-start-pill ps-4">
+          <span class="input-group-text bg-dark text-secondary border-secondary border-end-0 rounded-start-pill ps-4">
             🔍
           </span>
           <input 
             type="text" 
-            class="form-control bg-black text-light border-secondary border-start-0 ps-0 shadow-none rounded-end-pill" 
+            class="form-control bg-dark text-white border-secondary border-start-0 ps-2 shadow-none rounded-end-pill search-input" 
+            style="color: #ffffff !important; background-color: #161616 !important;"
             placeholder="Search listings by name (e.g., Graphics card)..." 
             [(ngModel)]="searchQuery"
             (ngModelChange)="onSearch()">
@@ -30,7 +30,7 @@
     <div class="row g-4 pt-2">
       
       <!-- Categories Sidebar -->
-      <div class="col-lg-3">
+      <div class="col-lg-2 col-md-3">
         <div class="card bg-black border border-secondary rounded-4 p-3 shadow-sm sticky-top" style="top: 2rem;">
           <div class="d-flex align-items-center justify-content-between mb-3 px-2">
             <h6 class="text-uppercase tracking-wider text-secondary fw-bold fs-7 mb-0">Categories</h6>
@@ -63,8 +63,8 @@
         </div>
       </div>
 
-      <!-- Products Grid -->
-      <div class="col-lg-9">
+      <!-- Products Grid (Prošireno da stane više proizvoda po redu) -->
+      <div class="col-lg-10 col-md-9">
         
         <!-- Empty State (ako nema proizvoda) -->
         <div *ngIf="products.length === 0" class="text-center py-5 card bg-black border border-secondary rounded-4">
@@ -75,13 +75,13 @@
           </div>
         </div>
 
-        <!-- Grid sa karticama -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" *ngIf="products.length > 0">
+        <!-- Grid sa karticama (povećan broj kolona sa xl-3 na xl-4 da stane više produkata) -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" *ngIf="products.length > 0">
           
           <div class="col" *ngFor="let product of products">
             <div class="card bg-black border border-secondary h-100 shadow-sm rounded-4 overflow-hidden text-light product-card">
               
-              <div class="position-relative bg-dark overflow-hidden" style="height: 210px;">
+              <div class="position-relative bg-dark overflow-hidden" style="height: 200px;">
                 <!-- Kategorija (Lijevo gore) -->
                 <span class="badge bg-dark bg-opacity-75 border border-secondary backdrop-blur position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill small text-light fw-semibold shadow-sm">
                   {{ product.category?.name || 'Hardware' }}
@@ -140,5 +140,4 @@
 
     </div>
 
-  </div>
 </div>
