@@ -1,24 +1,45 @@
-<nav class="navbar">
-  <div class="navbar-brand">
-    <a routerLink="/products">KupiProdaj</a>
-  </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary px-4 py-3 shadow-sm sticky-top">
+  <div class="container-fluid">
+    
+    <!-- Brand / Logo -->
+    <a class="navbar-brand fw-bold text-success fs-4 text-decoration-none" routerLink="/product-list">KupiProdaj</a>
 
-  <div class="navbar-menu">
-    <a routerLink="/products">Products</a>
-    <a routerLink="/add-product">Add item</a>
-  </div>
-
-  <div class="navbar-profile" *ngIf="isLoggedIn()">
-    <div class="profile-circle" (click)="toggleDropdown()">
-      <span *ngIf="!userProfileImage">{{ getUserInitials() }}</span>
-      <img *ngIf="userProfileImage" [src]="userProfileImage" alt="Profile picture" />
+    <!-- Navigation Links -->
+    <div class="navbar-nav flex-row gap-4 ms-4 me-auto">
+      <a class="nav-link text-secondary fw-medium px-2 rounded-3" routerLink="/add-item" routerLinkActive="active text-light bg-dark">Add item</a>
     </div>
 
-    <div class="dropdown-menu" *ngIf="dropdownOpen">
-      <a routerLink="/profile" class="profile-badge" title="Moj profil">
-        My profile
-      </a>
-      <button (click)="logout()">Logout</button>
+    <!-- Profile & Dropdown Section -->
+    <div class="navbar-profile position-relative" *ngIf="isLoggedIn()">
+      
+      <!-- Profile Circle -->
+      <div 
+        class="profile-circle rounded-circle border border-secondary overflow-hidden d-flex align-items-center justify-content-center bg-success text-white fw-bold shadow-sm" 
+        style="width: 42px; height: 42px; cursor: pointer;" 
+        (click)="toggleDropdown()">
+        
+        <img *ngIf="userProfileImage" [src]="userProfileImage" alt="Profile" class="w-100 h-100 object-fit-cover" />
+        <span *ngIf="!userProfileImage" class="fs-6">{{ getUserInitials() }}</span>
+      </div>
+
+      <!-- Dropdown Menu - Pojavljuje se ISKLJUČIVO kad je dropdownOpen == true -->
+      <div 
+        class="dropdown-menu bg-black border border-secondary rounded-4 shadow-lg p-2 position-absolute end-0 mt-2" 
+        *ngIf="dropdownOpen" 
+        style="min-width: 160px; z-index: 1050; display: block;">
+        
+        <a routerLink="/profile" class="dropdown-item text-light rounded-3 py-2 px-3 mb-1 text-decoration-none d-block" (click)="dropdownOpen = false">
+          My profile
+        </a>
+        
+        <div class="dropdown-divider border-secondary opacity-25 my-1"></div>
+        
+        <button class="dropdown-item text-danger rounded-3 py-2 px-3 bg-transparent border-0 w-100 text-start" (click)="logout()">
+          Logout
+        </button>
+      </div>
+
     </div>
+
   </div>
 </nav>

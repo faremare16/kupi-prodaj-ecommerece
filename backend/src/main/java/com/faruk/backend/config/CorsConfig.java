@@ -23,9 +23,13 @@ public class CorsConfig {
 
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                // Mapira URL /uploads/** na stvarni folder 'uploads/' na disku
+                // Mapira /uploads/**
                 registry.addResourceHandler("/uploads/**")
                         .addResourceLocations("file:uploads/");
+
+                // MAPIRA /product_pictures/** DIREKTNO NA FOLDER NA DISKU
+                registry.addResourceHandler("/product_pictures/**")
+                        .addResourceLocations("file:product_pictures/");
             }
         };
     }

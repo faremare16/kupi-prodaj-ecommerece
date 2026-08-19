@@ -61,26 +61,28 @@
           </div>
 
           <!-- EDIT MODE -->
-          <div *ngIf="isEditing">
-            <h4 class="fw-bold text-white mb-4">Edit Profile</h4>
+          <!-- EDIT MODE -->
+            <div *ngIf="isEditing">
+              <h4 class="fw-bold text-white mb-4">Edit Profile</h4>
 
-            <div class="text-center mb-4">
-              <div class="position-relative d-inline-block mb-3">
-                <img [src]="editData.profileImageUrl || 'default-avatar.png'" 
-                     class="rounded-circle object-fit-cover border border-secondary shadow-sm" 
-                     style="width: 120px; height: 120px;" 
-                     alt="Preview">
+              <div class="text-center mb-4">
+                <div class="position-relative d-inline-block mb-3">
+                  <!-- Dodan backend URL i provjera, isto kao u view modu -->
+                  <img [src]="editData.profileImageUrl ? (editData.profileImageUrl.startsWith('http') ? editData.profileImageUrl : 'http://127.0.0.1:8080' + editData.profileImageUrl) : 'default-avatar.png'" 
+                       class="rounded-circle object-fit-cover border border-secondary shadow-sm" 
+                       style="width: 120px; height: 120px;" 
+                       alt="Preview">
+                </div>
+                <div>
+                  <label class="btn btn-dark border border-secondary btn-sm rounded-pill px-4 text-light cursor-pointer shadow-sm">
+                    Choose New Image
+                    <input type="file" (change)="onFileSelected($event)" accept="image/*" class="d-none">
+                  </label>
+                </div>
+                <div *ngIf="imageError" class="text-danger small mt-2">
+                  {{ imageError }}
+                </div>
               </div>
-              <div>
-                <label class="btn btn-dark border border-secondary btn-sm rounded-pill px-4 text-light cursor-pointer shadow-sm">
-                  Choose New Image
-                  <input type="file" (change)="onFileSelected($event)" accept="image/*" class="d-none">
-                </label>
-              </div>
-              <div *ngIf="imageError" class="text-danger small mt-2">
-                {{ imageError }}
-              </div>
-            </div>
 
             <div class="mb-3">
               <label class="form-label text-secondary small">Username</label>

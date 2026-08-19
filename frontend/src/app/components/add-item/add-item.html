@@ -1,0 +1,124 @@
+<div class="container-fluid min-vh-100 bg-dark text-light py-5 px-lg-5 px-3">
+  <div class="container-xxl">
+    
+    <!-- Header / Title -->
+    <div class="row mb-4 align-items-center">
+      <div class="col text-center text-md-start">
+        <h2 class="fw-bold text-white mb-1">Add New Item</h2>
+        <p class="text-secondary small mb-0">List your product or hardware component for sale on the marketplace</p>
+      </div>
+    </div>
+
+    <!-- Main Card Layout -->
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card bg-black border border-secondary rounded-4 p-4 p-md-5 shadow-sm text-light">
+          
+          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            
+            <!-- Product Name -->
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-semibold">Product Name</label>
+              <input 
+                type="text" 
+                class="form-control bg-dark text-light border-secondary shadow-none rounded-3 py-2" 
+                placeholder="e.g., Nvidia RTX 4070"
+                formControlName="name">
+            </div>
+
+            <!-- Category Selection -->
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-semibold">Category</label>
+              <select 
+                class="form-select bg-dark text-light border-secondary shadow-none rounded-3 py-2" 
+                formControlName="categoryId">
+                <option value="" disabled selected>Select a category</option>
+                <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+              </select>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label class="form-label text-secondary small fw-semibold">Description</label>
+              <textarea 
+                rows="4" 
+                class="form-control bg-dark text-light border-secondary shadow-none rounded-3 py-2" 
+                placeholder="Describe condition, specifications, and details..."
+                formControlName="description"></textarea>
+            </div>
+
+            <!-- Price & Units in Stock -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label text-secondary small fw-semibold">Price (KM)</label>
+                <div class="input-group">
+                  <input 
+                    type="number" 
+                    class="form-control bg-dark text-light border-secondary shadow-none rounded-start-3 py-2" 
+                    placeholder="0.00"
+                    formControlName="price"
+                    min="0">
+                  <span class="input-group-text bg-black text-secondary border-secondary rounded-end-3">KM</span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-secondary small fw-semibold">Units in Stock</label>
+                <input 
+                  type="number" 
+                  class="form-control bg-dark text-light border-secondary shadow-none rounded-3 py-2" 
+                  placeholder="1"
+                  formControlName="unitsInStock"
+                  min="0">
+              </div>
+            </div>
+
+            <!-- Image Upload & Preview Section -->
+            <div class="mb-4 text-center">
+              <label class="form-label text-secondary small fw-semibold d-block text-start">Product Image</label>
+              
+              <div class="position-relative d-inline-block mb-2">
+                <img [src]="imagePreview ? imagePreview : 'default-avatar.png'" 
+                     class="rounded-3 object-fit-cover border border-secondary shadow-sm" 
+                     style="width: 120px; height: 120px;" 
+                     alt="Image Preview">
+              </div>
+
+              <div>
+                <label class="btn btn-dark border border-secondary btn-sm rounded-pill px-4 text-light cursor-pointer shadow-sm">
+                  Choose Image
+                  <input type="file" (change)="onFileSelected($event)" accept="image/*" class="d-none">
+                </label>
+              </div>
+
+              <div *ngIf="imageError" class="text-danger small mt-2">
+                {{ imageError }}
+              </div>
+              <div class="form-text text-secondary mt-1" style="font-size: 0.75rem;">Max size: 10MB. Supported formats: JPG, PNG, etc.</div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-end gap-2 pt-3 border-top border-secondary border-opacity-50">
+              <a 
+                routerLink="/products" 
+                class="btn btn-outline-secondary px-4 rounded-pill fw-semibold text-decoration-none">
+                Cancel
+              </a>
+              <button 
+                type="submit" 
+                [disabled]="productForm.invalid || isLoading" 
+                class="btn btn-success px-4 rounded-pill fw-semibold shadow-sm" 
+                style="background-color: #238636; border-color: #2ea043;">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ isLoading ? 'Saving...' : 'Save Product' }}
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { Product } from "../models/product";
 
 @Injectable({
     providedIn:'root'
@@ -31,6 +32,10 @@ export class ProductService {
         });
 
         return this.http.get<any[]>(`${this.apiUrl}/search/category?categoryId=${categoryId}`, { headers });
+    }
+
+    createProduct(formData: FormData): Observable<Product> {
+        return this.http.post<Product>(`${this.apiUrl}/products`, formData);
     }
 }
 

@@ -1,9 +1,12 @@
 package com.faruk.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,7 +40,14 @@ public class Product {
 
     private Long unitsInStock;
 
+    @CreationTimestamp
+    @Column(updatable = false)
     private Date datePublished;
 
     private Date dateUpdated;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable=false)
+    @JsonBackReference
+    private User user;
 }

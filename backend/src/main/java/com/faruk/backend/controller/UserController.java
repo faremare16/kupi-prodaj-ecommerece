@@ -1,7 +1,7 @@
 package com.faruk.backend.controller;
 
+import com.faruk.backend.dto.UserResponseDto;
 import com.faruk.backend.entity.User;
-import com.faruk.backend.repository.UserRepository;
 import com.faruk.backend.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
@@ -16,55 +16,46 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        List<UserResponseDto> users=userService.getAllUsers();
+        return ResponseEntity.ok().body(users);
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
-    }
-
-    @PostMapping
-    public User saveUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
+        UserResponseDto user=userService.getUsersResponseById(id);
+        return ResponseEntity.ok().body(user);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDto> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.ok().body(new UserResponseDto());
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> getCurrentUser(Authentication authentication) {
-        String currentUsername = authentication.getName();
-
-        User user = userRepository.findByUsername(currentUsername)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserResponseDto> getCurrentUser(Authentication authentication) {
+        String currentUsername=authentication.getName();
+        UserResponseDto userProfile=userService.getUserProfile(currentUsername);
+        return ResponseEntity.ok(userProfile);
     }
 
     @PutMapping("/me")
-    public ResponseEntity<User> updateUser(
-            Principal principal,
+    public ResponseEntity<UserResponseDto> updateUser(
+            Authentication authentication,
             @RequestParam("username") String username,
             @RequestParam("email") String email,
             @RequestParam("phoneNumber") String phoneNumber,
             @RequestParam(value="file", required = false) MultipartFile file) {
 
-        System.out.println("LOGGED IN USER FROM PRINCIPAL: " + (principal != null ? principal.getName() : "NULL"));
-
-        String currentEmail=principal.getName();
-        User updatedUser=userService.updateUser(currentEmail, username, email, phoneNumber, file);
+        String currentUsername=authentication.getName();
+        UserResponseDto updatedUser=userService.updateUser(currentUsername, username, email, phoneNumber, file);
         return ResponseEntity.ok(updatedUser);
     }
 }

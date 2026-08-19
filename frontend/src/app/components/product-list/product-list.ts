@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product';
-import { RouterLink } from '@angular/router';
 import { CategoryService } from '../../services/category';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
@@ -94,6 +93,4 @@ export class ProductListComponent implements OnInit{
       }
     });
   }
-
-  
 }

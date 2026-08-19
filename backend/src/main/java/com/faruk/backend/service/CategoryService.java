@@ -1,10 +1,13 @@
 package com.faruk.backend.service;
 
+import com.faruk.backend.dto.CategoryResponseDto;
+import com.faruk.backend.dto.ProductResponseDto;
 import com.faruk.backend.entity.Category;
 import com.faruk.backend.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -15,17 +18,21 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> getAllCategories(){
-        return categoryRepository.findAll();
+    public List<CategoryResponseDto> getAllCategories(){
+        List<Category> categories = categoryRepository.findAll();
+        return mapCategoriesToDo(categories);
+
     }
 
-    public Category getCategoryById(Long id){
-        return categoryRepository.findById(id)
+    public CategoryResponseDto getCategoryById(Long id){
+        Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
+        return mapCategoryToDo(category);
     }
 
-    public Category saveCategory(Category category){
-        return categoryRepository.save(category);
+    public CategoryResponseDto saveCategory(Category category){
+        Category savedCategory = categoryRepository.save(category);
+        return mapCategoryToDo(savedCategory);
     }
 
     public void deleteCategoryById(Long id){
@@ -34,6 +41,21 @@ public class CategoryService {
         }else{
             categoryRepository.deleteById(id);
         }
+    }
+
+    // pomocna metoda za mapiranje jedne kategorije
+    public CategoryResponseDto mapCategoryToDo(Category category){
+        return CategoryResponseDto.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .description(category.getDescription())
+                .products(category.getProducts())
+                .build();
+    }
+    public List<CategoryResponseDto> mapCategoriesToDo(List <Category> categories){
+        return categories.stream()
+                .map(this::mapCategoryToDo)
+                .collect(Collectors.toList());
     }
 
 

@@ -1,7 +1,10 @@
 package com.faruk.backend.controller;
 
+import com.faruk.backend.dto.CategoryResponseDto;
 import com.faruk.backend.entity.Category;
 import com.faruk.backend.service.CategoryService;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,22 +20,26 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAllCategories(){
-        return  categoryService.getAllCategories();
+    public ResponseEntity<List<CategoryResponseDto>> getAllCategories(){
+        List<CategoryResponseDto> categoryResponseDtos = categoryService.getAllCategories();
+        return ResponseEntity.ok().body(categoryResponseDtos);
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable Long id){
-        return categoryService.getCategoryById(id);
+    public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable Long id){
+        CategoryResponseDto categoryResponseDto = categoryService.getCategoryById(id);
+        return ResponseEntity.ok().body(categoryResponseDto);
     }
 
     @PostMapping
-    public Category saveCategory(@RequestBody Category category){
-        return categoryService.saveCategory(category);
+    public ResponseEntity<CategoryResponseDto> saveCategory(@RequestBody Category category){
+       CategoryResponseDto categoryResponseDto = categoryService.saveCategory(category);
+       return ResponseEntity.ok().body(categoryResponseDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCategoryById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id){
         categoryService.deleteCategoryById(id);
+        return ResponseEntity.ok().build();
     }
 }
