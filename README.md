@@ -1,0 +1,2 @@
+- **Backend API**: [https://kupi-prodaj-ecommerece.onrender.com](https://kupi-prodaj-ecommerece.onrender.com)
+- **Frontend Aplication**: [https://kupi-prodaj-ecommerece-1.onrender.com](https://kupi-prodaj-ecommerece-1.onrender.com)
