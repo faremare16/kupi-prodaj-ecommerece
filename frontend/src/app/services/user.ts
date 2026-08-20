@@ -9,7 +9,9 @@ import { User } from '../models/user';
    
 
 export class UserService {
-    private apiUrl='http://localhost:8080/api/v1/users'
+    private apiUrl = window.location.hostname === 'localhost'
+        ? 'http://localhost:8080/api/v1/users'
+        : 'https://kupi-prodaj-ecommercece.onrender.com/api/v1/users';
 
     constructor(private http: HttpClient){}
 
@@ -20,6 +22,4 @@ export class UserService {
     updateUser(user: User): Observable<User>{
         return this.http.put<User>(`${this.apiUrl}/update`, user)
     }
-
-
 }
