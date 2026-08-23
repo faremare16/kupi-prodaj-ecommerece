@@ -4,6 +4,7 @@ import com.faruk.backend.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -28,27 +29,53 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
+
                 .authorizeHttpRequests(auth -> auth
-                        // 1. Javne rute za auth i pretragu/pregled
+
+                        // CORS preflight
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/products/**", "/api/v1/categories/**").permitAll()
 
-                        // 2. Slanje slika / fajlova javno
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/product_pictures/**", "/uploads/**").permitAll()
+                        // Public product/category GET
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/v1/products/**",
+                                "/api/v1/categories/**"
+                        ).permitAll()
 
-                        // 3. Sve ostalo (POST, PUT, DELETE, /api/v1/users/me itd.) MORA biti prijavljeno
+                        // Public images/files
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/product_pictures/**",
+                                "/uploads/**"
+                        ).permitAll()
+
+                        // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
+
         return http.build();
     }
 
     @Bean
-    public WebSecurityCustomizer  webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/product_pictures/**", "/uploads/**");
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+                .requestMatchers(
+                        "/product_pictures/**",
+                        "/uploads/**"
+                );
     }
 }
