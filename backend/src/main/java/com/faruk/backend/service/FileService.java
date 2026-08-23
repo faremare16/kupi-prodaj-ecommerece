@@ -26,8 +26,6 @@ public class FileService {
             if(Files.exists(filePath)) {
                 Files.deleteIfExists(filePath);
                 return true;
-            } else {
-                System.out.println("DEBUG: Fajl NE POSTOJI na ovoj putanji!");
             }
         }catch(IOException e){
             System.err.println("Error while deleting file: "+e.getMessage());

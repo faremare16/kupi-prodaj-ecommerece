@@ -99,7 +99,7 @@ public class ProductService {
 
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-                product.setImageUrl("product_pictures/"+fileName);
+                product.setImageUrl(PRODUCT_UPLOAD_DIR + fileName);
             }catch(IOException e){
                 throw new RuntimeException("Error while trying to save product picture: " + e);
             }

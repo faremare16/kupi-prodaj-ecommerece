@@ -14,13 +14,13 @@ import java.nio.file.Paths;
 @RestController
 public class ImageController {
 
-    private final Path rootLocation= Paths.get("uploads/product_pictures");
+    private final Path rootLocation= Paths.get("uploads");
 
-    @GetMapping("/product_pictures/{filename:.+}")
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename){
+    @GetMapping("/uploads/{folder}/{filename:.+}")
+    public ResponseEntity<Resource> serveFile(@PathVariable String folder, @PathVariable String filename){
         try{
-            Path file = rootLocation.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
+            Path file = rootLocation.resolve(folder).resolve(filename);
+            Resource resource = UrlResource.from(file.toUri()); // ili new UrlResource(file.toUri())
 
             if(resource.exists() || resource.isReadable()){
                 String contentType="application/octet-stream";
@@ -28,16 +28,17 @@ public class ImageController {
                 else if(filename.endsWith(".jpg") || filename.endsWith(".jpeg")) contentType = "image/jpeg";
                 else if(filename.endsWith(".gif")) contentType = "image/gif";
                 else if(filename.endsWith(".bmp")) contentType = "image/bmp";
-                else if(filename.endsWith("webp")) contentType = "image/webp";
+                else if(filename.endsWith(".webp")) contentType = "image/webp";
 
                 return ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(contentType))
                         .body(resource);
-            }else{
+            } else {
                 return ResponseEntity.notFound().build();
             }
-        }catch(Exception e){
+        } catch(Exception e){
             return ResponseEntity.internalServerError().build();
         }
     }
 }
+
