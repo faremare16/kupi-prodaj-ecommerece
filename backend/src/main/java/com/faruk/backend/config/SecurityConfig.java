@@ -83,14 +83,14 @@ public class SecurityConfig {
                 );
     }
 
-   //         "http://localhost:4200",
-   //         "https://kupi-prodaj-ecommerce-1.onrender.com",
-   //         "https://https://kupi-prodaj-ecommerece-1.onrender.com"
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:4200",
+                "https://kupi-prodaj-ecommerece-1.onrender.com"
+                ));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));

@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
 export class CategoryService {
     private apiUrl = window.location.hostname === 'localhost'
         ? 'http://localhost:8080/api/v1/categories'
-        : 'https://kupi-prodaj-ecommercece.onrender.com/api/v1/categories';
+        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/categories';
 
     constructor(private http: HttpClient){}
 

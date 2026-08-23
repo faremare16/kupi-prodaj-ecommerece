@@ -9,7 +9,10 @@ import { __param } from 'tslib';
 })
 
 export class AdminService {
-    private apiUrl = 'http://localhost:8080/api/v1/admin';
+    private apiUrl = window.location.hostname === 'localhost'
+        ? 'http://localhost:8080/api/v1/auth'
+        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/auth'
+
 
     constructor(private http: HttpClient){}
 

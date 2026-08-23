@@ -10,7 +10,7 @@ import { Product } from "../models/product";
 export class ProductService {
     private apiUrl = window.location.hostname === 'localhost'
         ? 'http://localhost:8080/api/v1/products'
-        : 'https://kupi-prodaj-ecommercece.onrender.com/api/v1/products';
+        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/products';
 
     constructor(private http: HttpClient) { }
 

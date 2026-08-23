@@ -9,7 +9,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
     private apiUrl = window.location.hostname === 'localhost'
         ? 'http://localhost:8080/api/v1/auth'
-        : 'https://kupi-prodaj-ecommercece.onrender.com/api/v1/auth';
+        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/auth'
 
     constructor(private http: HttpClient){}
 
