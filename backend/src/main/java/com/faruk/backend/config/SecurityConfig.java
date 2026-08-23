@@ -89,7 +89,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:4200",
                 "https://kupi-prodaj-ecommerce-1.onrender.com",
-                "https://kupi-prodaj-ecommiere-1.onrender.com"
+                "https://https://kupi-prodaj-ecommerece-1.onrender.com"
         ));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
