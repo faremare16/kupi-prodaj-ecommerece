@@ -1,0 +1,48 @@
+<!-- Glavni kontejner sa retro terminal dizajnom (crna pozadina, zeleni tekst, monospace font) -->
+<div style="padding: 20px; font-family: monospace; background-color: #121212; color: #00ff00; min-height: 100vh;">
+  
+  <h2>[ADMIN_PANEL // USER_MANAGEMENT]</h2>
+  <p>Status: Connected with database using user model.</p>
+  
+  <hr style="border-color: #00ff00;">
+
+  <!-- Dugme za ručno osvježavanje liste korisnika ako zatreba -->
+  <button (click)="getAllUsers()" style="background: #00ff00; color: #121212; border: none; padding: 8px 15px; cursor: pointer; font-family: monospace; font-weight: bold; margin-bottom: 20px;">
+    [REFRESH LIST]
+  </button>
+
+  <!-- HTML Tabela za prikaz korisnika -->
+  <table style="width: 100%; border-collapse: collapse; border: 1px solid #00ff00;">
+    <thead>
+      <tr style="background-color: #1a1a1a; text-align: left;">
+        <th style="padding: 10px; border: 1px solid #00ff00;">ID</th>
+        <th style="padding: 10px; border: 1px solid #00ff00;">Korisničko ime / Email</th>
+        <th style="padding: 10px; border: 1px solid #00ff00;">Akcije</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- *ngFor petlja prolazi kroz niz "users" i za svakog korisnika "u" pravi novi red (tr) -->
+      <tr *ngFor="let u of users">
+        <!-- ID korisnika -->
+        <td style="padding: 10px; border: 1px solid #00ff00;">{{ u.id }}</td>
+        
+        <!-- Korisničko ime i email -->
+        <td style="padding: 10px; border: 1px solid #00ff00;">{{ u.username }} / {{ u.email }}</td>
+        
+        <!-- Dugme za brisanje sa funkcijom i sigurnim ID-jem -->
+        <td style="padding: 10px; border: 1px solid #00ff00;">
+          <button (click)="deleteUser(u.id!)" style="background: #ff0000; color: white; border: none; padding: 5px 10px; cursor: pointer; font-family: monospace;">
+            [DELETE]
+          </button>
+        </td>
+      </tr>
+
+      <!-- Ovaj red se prikazuje SAMO ako je niz korisnika prazan -->
+      <tr *ngIf="users.length === 0">
+        <td colspan="3" style="padding: 10px; border: 1px solid #00ff00; text-align: center; color: #888;">
+          No found users in database.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -60,9 +60,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void deleteUser(Long id){
+    public void deleteUserById(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.getRoles().clear();
 
         if(user.getProfileImageUrl()!=null && !user.getProfileImageUrl().isEmpty()){
             fileService.deleteFile(user.getProfileImageUrl());

@@ -27,7 +27,7 @@ export class LoginComponent {
     ).subscribe({
       next: (response)=>{
         console.log('Login succesfull', response);
-        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('authToken', response.token); 
         this.router.navigate(['/product-list']);
       },
       error: (err)=>{

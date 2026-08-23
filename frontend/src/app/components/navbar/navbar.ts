@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/authservice';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,8 @@ export class NavbarComponent implements OnInit{
 
   constructor(private router: Router, 
               private cdr: ChangeDetectorRef,
-              private http: HttpClient){}
+              private http: HttpClient,
+              public authService: AuthService){}
 
   ngOnInit(): void {
     if(this.isLoggedIn()){
@@ -47,7 +49,8 @@ export class NavbarComponent implements OnInit{
 
 
   isLoggedIn(): boolean{
-    return !!localStorage.getItem('authToken');
+    const token = localStorage.getItem('authToken');
+    return !!token && token !== 'undefined' && token !== 'null';
   }
 
   toggleDropdown(){
