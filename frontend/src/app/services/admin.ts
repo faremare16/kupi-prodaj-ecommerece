@@ -3,15 +3,14 @@ import { Injectable} from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { __param } from 'tslib';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn:'root'
 })
 
 export class AdminService {
-    private apiUrl = window.location.hostname === 'localhost'
-        ? 'http://localhost:8080/api/v1/users'
-        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/users'
+    private apiUrl=`${environment.apiUrl}/users`;
 
 
     constructor(private http: HttpClient){}

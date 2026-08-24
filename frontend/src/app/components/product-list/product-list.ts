@@ -3,10 +3,11 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product';
 import { CategoryService } from '../../services/category';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })

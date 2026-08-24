@@ -2,15 +2,14 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Product } from "../models/product";
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn:'root'
 })
     
 export class ProductService {
-    private apiUrl = window.location.hostname === 'localhost'
-        ? 'http://localhost:8080/api/v1/products'
-        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/products';
+    private apiUrl=`${environment.apiUrl}/products`;
 
     constructor(private http: HttpClient) { }
 

@@ -7,6 +7,7 @@ import { AddItemComponent } from './components/add-item/add-item';
 import { MyProductListComponent } from './components/my-product-list/my-product-list';
 import { adminGuard } from './guards/admin-guard';
 import { AdminComponent } from './components/admin/admin';
+import { ProductDetailsComponent } from './components/product-details/product-details';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,6 +19,7 @@ export const routes: Routes = [
     { path: 'profile', component: ProfileComponent},
     { path: 'add-item', component: AddItemComponent},
     { path: 'my-product-list', component: MyProductListComponent},
+    { path: 'product-details/:id', component: ProductDetailsComponent },
 
     // admin guard
     {

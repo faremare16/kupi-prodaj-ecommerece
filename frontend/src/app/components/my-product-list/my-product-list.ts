@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product';
 import { UserService } from '../../services/user';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-my-product-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './my-product-list.html',
   styleUrl: './my-product-list.css',
 })

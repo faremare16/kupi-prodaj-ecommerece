@@ -2,14 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = window.location.hostname === 'localhost'
-        ? 'http://localhost:8080/api/v1/auth'
-        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/auth'
+    private apiUrl=`${environment.apiUrl}/auth`;
 
     constructor(private http: HttpClient){}
 

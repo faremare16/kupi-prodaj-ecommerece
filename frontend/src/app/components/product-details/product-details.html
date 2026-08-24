@@ -1,0 +1,102 @@
+<div class="container-fluid min-vh-100 bg-dark text-light py-5 px-lg-5 px-3">
+  
+  <!-- Back button / Nazad -->
+  <div class="mb-4">
+    <a routerLink="/product-list" class="btn btn-outline-secondary btn-sm rounded-pill px-3 border-secondary text-secondary back-btn">
+      ← Back to Marketplace
+    </a>
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-success" role="status"></div>
+  </div>
+
+  <!-- Glavni sadržaj kada se proizvod učita -->
+  <div *ngIf="!isLoading && product" class="row g-4">
+    
+    <!-- Lijeva strana: Slika proizvoda u stilu kartica -->
+    <div class="col-lg-6">
+      <div class="card bg-black border border-secondary rounded-4 overflow-hidden shadow-sm p-3 h-100">
+        <div class="bg-dark rounded-3 overflow-hidden position-relative h-100" style="min-height: 350px;">
+          <img *ngIf="product.imageUrl" 
+                [src]="product.imageUrl.startsWith('http') ? product.imageUrl : 'http://127.0.0.1:8080/' + product.imageUrl" 
+                class="w-100 h-100 object-fit-cover" 
+                alt="{{ product.name }}">
+          
+          <div *ngIf="!product.imageUrl" class="d-flex align-items-center justify-content-center h-100 text-secondary bg-black bg-opacity-50">
+            <span>No image available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desna strana: Informacije o proizvodu i prodavaču -->
+    <div class="col-lg-6">
+      <div class="card bg-black border border-secondary rounded-4 p-4 shadow-sm h-100 d-flex flex-column">
+        
+        <!-- Kategorija i Datum (isti bedževi kao na listi) -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge bg-dark bg-opacity-85 border border-secondary backdrop-blur px-3 py-2 rounded-pill text-light fw-semibold shadow-sm">
+            {{ product.category?.name || 'Hardware' }}
+          </span>
+          <span *ngIf="product.datePublished" class="badge bg-dark bg-opacity-85 border border-secondary backdrop-blur px-3 py-2 rounded-pill text-secondary shadow-sm">
+            🕒 {{ product.datePublished | date:'dd.MM.yyyy.' }}
+          </span>
+        </div>
+
+        <!-- Naziv proizvoda -->
+        <h2 class="fw-bold text-white mb-3">{{ product.name }}</h2>
+
+        <!-- Cijena i Stanje (u stilu kartica) -->
+        <div class="d-flex align-items-center justify-content-between p-3 mb-4 bg-dark border border-secondary border-opacity-50 rounded-3">
+          <div>
+            <span class="text-secondary small d-block" style="font-size: 0.75rem;">Price</span>
+            <span class="fs-4 fw-bold text-success">{{ product.price }} KM</span>
+          </div>
+          <div class="text-end">
+            <span class="text-secondary small d-block" style="font-size: 0.75rem;">Availability</span>
+            <span class="badge bg-dark border border-secondary text-light px-3 py-2">{{ product.unitsInStock }} left</span>
+          </div>
+        </div>
+
+        <!-- Opis proizvoda -->
+        <div class="mb-4">
+          <h5 class="fw-bold text-light mb-2">Description</h5>
+          <p class="text-secondary small" style="white-space: pre-line; line-height: 1.6;">
+            {{ product.description || 'No description provided for this product.' }}
+          </p>
+        </div>
+
+        <!-- Sekcija sa informacijama o korisniku / prodavaču -->
+        <div class="mt-auto bg-dark border border-secondary rounded-4 p-3">
+          <h6 class="fw-bold text-light mb-3">👤 Seller Information</h6>
+          
+          <div class="d-flex flex-column gap-2 small">
+            <div class="text-light">
+              <span class="text-secondary">Username:</span> 
+              <strong class="text-white ms-2">{{ product.user?.username || 'faruko' }}</strong>
+            </div>
+            
+            <div class="text-light">
+              <span class="text-secondary">Email:</span> 
+              <a [href]="'mailto:' + product.user?.email" class="text-success text-decoration-none ms-2 hover-link">
+                {{ product.user?.email || 'Not available' }}
+              </a>
+            </div>
+
+            <div class="text-light">
+              <span class="text-secondary">Phone number:</span> 
+              <a [href]="'tel:' + product.user?.phoneNumber" class="text-success text-decoration-none ms-2 hover-link">
+                {{ product.user?.phoneNumber || 'Not available' }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

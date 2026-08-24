@@ -1,6 +1,7 @@
 package com.faruk.backend.service;
 
 import com.faruk.backend.dto.ProductResponseDto;
+import com.faruk.backend.dto.UserResponseDto;
 import com.faruk.backend.entity.Category;
 import com.faruk.backend.entity.Product;
 import com.faruk.backend.entity.User;
@@ -44,13 +45,21 @@ public class ProductService {
         return mapProductsToDto(products);
     }
 
-    public ProductResponseDto getProductResponseById(Long id){
+    public ProductResponseDto getProductResponseById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        String ownerUsername = "Unknown";
-        if(product.getUser() != null) {
-            ownerUsername = product.getUser().getUsername();
+        UserResponseDto userResponseDto = null;
+        if (product.getUser() != null) {
+            User u = product.getUser();
+            userResponseDto = UserResponseDto.builder()
+                    .id(u.getId())
+                    .username(u.getUsername())
+                    .email(u.getEmail())
+                    .phoneNumber(u.getPhoneNumber())
+                    .dateCreated(u.getDateCreated())
+                    .profileImageUrl(u.getProfileImageUrl())
+                    .build();
         }
 
         return ProductResponseDto.builder()
@@ -60,7 +69,7 @@ public class ProductService {
                 .price(product.getPrice())
                 .unitsInStock(product.getUnitsInStock())
                 .imageUrl(product.getImageUrl())
-                .username(ownerUsername)
+                .user(userResponseDto)
                 .category(product.getCategory())
                 .datePublished(product.getDatePublished())
                 .build();
@@ -126,9 +135,17 @@ public class ProductService {
 
     public List<ProductResponseDto> mapProductsToDto(List<Product> products){
         return products.stream().map(product -> {
-            String ownerUsername = "Unknown";
+            UserResponseDto userResponseDto = null;
             if (product.getUser() != null) {
-                ownerUsername = product.getUser().getUsername();
+                User u = product.getUser();
+                userResponseDto = UserResponseDto.builder()
+                        .id(u.getId())
+                        .username(u.getUsername())
+                        .email(u.getEmail())
+                        .phoneNumber(u.getPhoneNumber())
+                        .dateCreated(u.getDateCreated())
+                        .profileImageUrl(u.getProfileImageUrl())
+                        .build();
             }
 
             return ProductResponseDto.builder()
@@ -138,7 +155,7 @@ public class ProductService {
                     .price(product.getPrice())
                     .unitsInStock(product.getUnitsInStock())
                     .imageUrl(product.getImageUrl())
-                    .username(ownerUsername)
+                    .user(userResponseDto)
                     .category(product.getCategory())
                     .datePublished(product.getDatePublished())
                     .build();

@@ -1,36 +1,53 @@
-.product-card {
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  border-color: #3b82f6 !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
-}
-
-.product-img {
-  transition: transform 0.3s ease;
-}
-
-.product-card:hover .product-img {
-  transform: scale(1.05);
-}
-
-.category-btn:hover {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+/* Boja teksta koji korisnik kuca u search bar */
+.search-input {
   color: #ffffff !important;
 }
 
-.search-input::placeholder {
-  color: #a0a0a0 !important; /* Stavi boju koju želiš za placeholder */
-  opacity: 1; /* Obavezno za neke pretraživače poput Firefoxa da primjene punu boju */
+/* Uklanjanje plavog fokusa i postavljanje zelenog obruča na search bar */
+.search-input:focus {
+  border-color: #2ea043 !important;
+  box-shadow: 0 0 0 0.25rem rgba(46, 160, 67, 0.25) !important;
 }
 
-/* Za starije verzije pretraživača zlu ne trebalo */
+/* Boja placeholder teksta */
+.search-input::placeholder {
+  color: #a0a0a0 !important;
+  opacity: 1;
+}
+
 .search-input::-webkit-input-placeholder {
   color: #a0a0a0 !important;
 }
 .search-input::-moz-placeholder {
   color: #a0a0a0 !important;
   opacity: 1;
+}
+
+/* Glatka animacija i efekat za dugmad kategorija */
+.category-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+}
+
+/* Efekat kada pređeš mišem preko kategorije */
+.category-btn:hover {
+  background-color: rgba(35, 134, 54, 0.15) !important;
+  color: #2ea043 !important;
+  transform: translateX(6px);
+}
+
+/* Efekat za aktivnu/izabranu kategoriju */
+.category-btn.active-category {
+  background-color: #238636 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+}
+
+/* Zeleni obrub i sjenka na hover za kartice proizvoda */
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: #2ea043 !important;
+  box-shadow: 0 10px 25px -5px rgba(46, 160, 67, 0.15) !important;
+  transition: all 0.25s ease;
 }

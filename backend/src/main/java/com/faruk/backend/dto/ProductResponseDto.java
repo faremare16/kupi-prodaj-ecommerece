@@ -20,7 +20,7 @@ public class ProductResponseDto {
     private BigDecimal price;
     private Long unitsInStock;
     private String imageUrl;
-    private String username;
     private Date datePublished;
     private Category category;
+    private UserResponseDto user;
 }
