@@ -1,4 +1,4 @@
 export const environment={
     production: true,
-    apiUrl: 'https://kupi-prodaj-ecommerce.onrender.com/api/v1'
+    apiUrl: 'https://kupi-prodaj-ecommerece.onrender.com/api/v1'
 }
