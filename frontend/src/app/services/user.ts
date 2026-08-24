@@ -1,26 +1,30 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-    providedIn:'root' // čini ovaj servis dostupan u cijeloj aplikaciji
+    providedIn: 'root'
 })
-   
-
 export class UserService {
-    // osnovni url endpoint na backend-u
-    private apiUrl=`${environment.apiUrl}/users`;
+    private apiUrl = `${environment.apiUrl}/users`;
 
-    // pravimo http da bi smo mogli slati HTTP zahtjeve prema serveru
-    constructor(private http: HttpClient){}
+    constructor(private http: HttpClient) {}
 
-    getCurrentUserInfo(): Observable<User>{
-        return this.http.get<User>(`${this.apiUrl}/me`)
+    getCurrentUserInfo(): Observable<User> {
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        return this.http.get<User>(`${this.apiUrl}/me`, { headers });
     }
 
-    updateUser(user: User): Observable<User>{
-        return this.http.put<User>(`${this.apiUrl}/update`, user)
+    updateUser(user: User): Observable<User> {
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+        return this.http.put<User>(`${this.apiUrl}/update`, user, { headers });
     }
 }
