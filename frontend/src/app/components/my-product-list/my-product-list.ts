@@ -26,31 +26,31 @@ export class MyProductListComponent implements OnInit {
   loadMyProducts() {
     this.userService.getCurrentUserInfo().subscribe({
       next: (user) => {
-        console.log("KLJUČNI PODACI - Ulogovani korisnik:", user);
-        console.log("ID korisnika koji se šalje:", user?.id);
+        console.log("KEY DATA: Logged in user: ", user);
+        console.log("ID of user that is being sent", user?.id);
 
         if (user && user.id) {
           this.productService.getProductByUserId(user.id).subscribe({
             next: (products) => {
-              console.log("Proizvodi vraćeni sa bekenda:", products);
+              console.log("Products sent back on backend", products);
               this.myProducts = products;
               this.isLoading = false;
               this.cdr.detectChanges();
             },
             error: (err) => {
-              console.error('Greška pri učitavanju proizvoda (404 ili drugo):', err);
+              console.error('Error while trying to load list of products: ', err);
               this.isLoading = false;
               this.cdr.detectChanges();
             }
           });
         } else {
-          console.warn("Upozorenje: Korisnik nema ID ili objekat korisnika nije stigao dobro!");
+          console.warn('Warning: User doesnt have id or object of user didnt come well!');
           this.isLoading = false;
           this.cdr.detectChanges();
         }
       },
       error: (err) => {
-        console.error('Greška pri učitavanju ulogovanog korisnika:', err);
+        console.error('Error while trying to load logged in user', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       }

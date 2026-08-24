@@ -10,18 +10,18 @@ import { __param } from 'tslib';
 
 export class AdminService {
     private apiUrl = window.location.hostname === 'localhost'
-        ? 'http://localhost:8080/api/v1/auth'
-        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/auth'
+        ? 'http://localhost:8080/api/v1/users'
+        : 'https://kupi-prodaj-ecommerece.onrender.com/api/v1/users'
 
 
     constructor(private http: HttpClient){}
 
     getUsers(): Observable<User[]> {
-        return this.http.get<User[]>(`${this.apiUrl}/users`);
+        return this.http.get<User[]>(this.apiUrl);
     }   
 
     deleteUser(id: number): Observable<User> {
-        return this.http.delete(`${this.apiUrl}/users/${id}`);
+        return this.http.delete(`${this.apiUrl}/${id}`);
 
         
     }
