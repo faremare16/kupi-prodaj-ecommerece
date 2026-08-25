@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { User } from '../../models/user';
 import { Product } from '../../models/product';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +34,7 @@ export class ProfileComponent implements OnInit{
     const token=localStorage.getItem('authToken');
     const headers=new HttpHeaders({ 'Authorization': `Bearer ${token}`});
 
-    this.http.get('http://127.0.0.1:8080/api/v1/users/me',{ headers }).subscribe({
+    this.http.get<User>(`${environment.apiUrl}/users/me`, { headers }).subscribe({
       next: (data)=>{
         this.user=data; 
         this.editData={ ...data } as Partial<User>;
