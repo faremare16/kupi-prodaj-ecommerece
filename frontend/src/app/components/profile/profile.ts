@@ -5,6 +5,7 @@ import { User } from '../../models/user';
 import { Product } from '../../models/product';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-profile',
@@ -28,7 +29,8 @@ export class ProfileComponent implements OnInit{
   }
 
   constructor(private cdr: ChangeDetectorRef, 
-              private http: HttpClient){}
+              private http: HttpClient,
+              private userService: UserService){}
 
   loadUserProfile(){
     const token=localStorage.getItem('authToken');
@@ -105,22 +107,21 @@ export class ProfileComponent implements OnInit{
       formData.append('file', this.selectedFile);
     }
 
-    this.http.put<User>('http://127.0.0.1:8080/api/v1/users/me', formData, { headers }).subscribe({
-      next: (responseUser)=>{
-        console.log("ODGOVOR SA BACKENDA NAKON SAVE:", responseUser);
-        this.user=responseUser;
-        this.isEditing=false;
-        this.selectedFile=null;
-        this.imageError=null;
+    this.userService.updateUser(formData).subscribe({
+      next: (responseUser) => {
+        console.log("ANSWER FROM BACKEND AFTER FIX", responseUser);
+        this.user = responseUser;
+        this.isEditing = false;
+        this.selectedFile = null;
+        this.imageError = null;
         this.cdr.detectChanges();
-        alert('Profile succesfully updated');
+        alert('Profile successfully updated');
       },
-      error: (err)=>{
+      error: (err) => {
         console.log('Error while updating profile', err);
-        alert('Error has occured');
-
+        alert('Error has occurred');
       }
-    })
+    });
   }
 
   deleteProduct(productId: number | undefined): void {

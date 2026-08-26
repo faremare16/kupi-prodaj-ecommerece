@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Service
+//Višak ne koristi se
 public class FileService {
 
     public boolean deleteFile(String fileUrlOrName){

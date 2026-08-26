@@ -55,6 +55,13 @@ public class UserController {
             @RequestParam(value="file", required = false) MultipartFile file) {
 
         String currentUsername=authentication.getName();
+
+        if (file == null || file.isEmpty() || file.getOriginalFilename() == null || file.getOriginalFilename().trim().isEmpty()) {
+            file = null;
+        }
+
+        System.out.println("PRIMLJEN FAJL NA BACKENDU: " + (file != null ? file.getOriginalFilename() + " (Veličina: " + file.getSize() + " bajtova)" : "FAJL JE NULL"));
+
         UserResponseDto updatedUser=userService.updateUser(currentUsername, username, email, phoneNumber, file);
         return ResponseEntity.ok(updatedUser);
     }

@@ -20,11 +20,11 @@ export class UserService {
         return this.http.get<User>(`${this.apiUrl}/me`, { headers });
     }
 
-    updateUser(user: User): Observable<User> {
+    updateUser(formData: FormData): Observable<User> {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`
         });
-        return this.http.put<User>(`${this.apiUrl}/update`, user, { headers });
+        return this.http.put<User>(`${this.apiUrl}/me`, formData, { headers });
     }
 }

@@ -11,13 +11,7 @@ import com.faruk.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,17 +21,16 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
-    private final FileService fileService;
-    private final String PRODUCT_UPLOAD_DIR="uploads/product_pictures/";
+    private final ImgBbService imgBbService;
 
     public ProductService(ProductRepository productRepository,
                           CategoryRepository categoryRepository,
                           UserRepository userRepository,
-                          FileService fileService) {
+                          ImgBbService imgBbService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
-        this.fileService = fileService;
+        this.imgBbService = imgBbService;
     }
 
     public List<ProductResponseDto> getAllProducts(){
@@ -95,23 +88,10 @@ public class ProductService {
         product.setCategory(category);
         product.setUser(user);
 
-        // logika za snimanje slika u folder product_pictures
+        // logika za snimanje slika na IMGBB
         if(file != null && !file.isEmpty()){
-            try{
-                File directory = new File(PRODUCT_UPLOAD_DIR);
-                if(!directory.exists()){
-                    directory.mkdirs();
-                }
-
-                String fileName = UUID.randomUUID().toString() + "." + file.getOriginalFilename();
-                Path filePath = Paths.get(PRODUCT_UPLOAD_DIR + fileName);
-
-                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                product.setImageUrl(PRODUCT_UPLOAD_DIR + fileName);
-            }catch(IOException e){
-                throw new RuntimeException("Error while trying to save product picture: " + e);
-            }
+            String imageUrl = imgBbService.uploadImage(file);
+            product.setImageUrl(imageUrl);
         }
 
         if(product.getSku()==null || product.getSku().trim().isEmpty()){
@@ -125,10 +105,6 @@ public class ProductService {
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
-
-        if (product.getImageUrl() != null) {
-            fileService.deleteFile(product.getImageUrl());
-        }
 
         productRepository.delete(product);
     }

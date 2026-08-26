@@ -24,14 +24,12 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final FileService fileService;
-
-    private final String USER_UPLOAD_DIR="uploads/profiles/";
+    private final ImgBbService imgBbService;
 
     public UserService(UserRepository userRepository,
-                       FileService fileService) {
+                       ImgBbService imgBbService) {
         this.userRepository = userRepository;
-        this.fileService=fileService;
+        this.imgBbService = imgBbService;
     }
 
     public UserResponseDto getUserProfile(String username){
@@ -65,11 +63,6 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.getRoles().clear();
-
-        if(user.getProfileImageUrl()!=null && !user.getProfileImageUrl().isEmpty()){
-            fileService.deleteFile(user.getProfileImageUrl());
-        }
-
         userRepository.delete(user);
     }
 
@@ -97,30 +90,13 @@ public class UserService implements UserDetailsService {
         user.setPhoneNumber(phoneNumber);
 
         // logika za snimanje profilnih u folder profiles i brisanje stare
-        if(file != null && !file.isEmpty()){
-            try{
-                if(user.getProfileImageUrl()!=null && !user.getProfileImageUrl().isEmpty()){
-                    fileService.deleteFile(user.getProfileImageUrl());
-                }
-
-                File directory = new File(USER_UPLOAD_DIR);
-                if(!directory.exists()){
-                    directory.mkdirs();
-                }
-
-                String fileName=System.currentTimeMillis()+"_"+file.getOriginalFilename();
-                Path filePath = Paths.get(USER_UPLOAD_DIR+fileName);
-
-                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                user.setProfileImageUrl("/uploads/profiles/"+fileName);
-            }catch(IOException e){
-                throw new RuntimeException("Error while trying to save a file "+e);
-            }
+        if (file != null) {
+            String imageUrl = imgBbService.uploadImage(file);
+            user.setProfileImageUrl(imageUrl);
         }
 
-        User savedUser=userRepository.save(user);
-        return mapUserToDto(user);
+        User savedUser = userRepository.save(user);
+        return mapUserToDto(savedUser);
     }
 
     public UserResponseDto mapUserToDto(User user){
