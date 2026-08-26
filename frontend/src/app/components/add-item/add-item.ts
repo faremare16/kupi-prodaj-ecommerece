@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-add-item',
@@ -42,7 +43,7 @@ export class AddItemComponent implements OnInit{
   }
    // uctivanje kategorija, za padajući meni
   loadCategories(){
-    this.http.get<any[]>('http://127.0.0.1:8080/api/v1/categories').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/categories`).subscribe({
       next: (data)=>{
         this.categories=data;
       },
@@ -95,10 +96,6 @@ export class AddItemComponent implements OnInit{
     }
     
     this.isLoading=true;
-    const token=localStorage.getItem('authToken');
-    const headers=new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
 
     const formData=new FormData();
     formData.append('name', this.productForm.get('name')?.value);
@@ -111,7 +108,9 @@ export class AddItemComponent implements OnInit{
       formData.append('file', this.selectedFile);
     }
 
-    this.http.post('http://127.0.0.1:8080/api/v1/products', formData, { headers })
+    this.http.post(`${environment.apiUrl}/products`, formData, {
+      withCredentials: true
+    })
       .pipe(
         finalize(() => {
           this.isLoading=false;

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Product } from "../models/product";
@@ -18,57 +18,28 @@ export class ProductService {
     }
 
     searchProducts(query: string):Observable<Product[]>{
-        const token = localStorage.getItem('authToken'); 
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-
-        return this.http.get<Product[]>(`${this.apiUrl}/search/name?name=${query}`, { headers });
+        return this.http.get<Product[]>(`${this.apiUrl}/search/name?name=${query}`);
     }
 
     getProductByCategory(categoryId: number):Observable<Product[]>{
-        const token = localStorage.getItem('authToken'); 
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-
-        return this.http.get<Product[]>(`${this.apiUrl}/search/category?categoryId=${categoryId}`, { headers });
+        return this.http.get<Product[]>(`${this.apiUrl}/search/category?categoryId=${categoryId}`);
     }
 
     getProductById(id: number):Observable<Product>{
-        const token = localStorage.getItem('authToken'); 
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-
-        return this.http.get<Product>(`${this.apiUrl}/${id}`, { headers });
+        return this.http.get<Product>(`${this.apiUrl}/${id}`);
     }
 
     getProductByUserId(userId: number):Observable<Product[]>{
-        const token = localStorage.getItem('authToken'); 
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-
-        return this.http.get<Product[]>(`${this.apiUrl}/user/${userId}`, { headers });
+        return this.http.get<Product[]>(`${this.apiUrl}/user/${userId}`);
     }
 
     createProduct(formData: FormData): Observable<Product> {
-        const token = localStorage.getItem('authToken');
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-
-        return this.http.post<Product>(this.apiUrl, formData, { headers });
+        return this.http.post<Product>(this.apiUrl, formData);
+        withCredentials: true
     }
 
     deleteProduct(id: number): Observable<any> {
-        const token = localStorage.getItem('authToken'); 
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-
-        return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+        return this.http.delete(`${this.apiUrl}/${id}`);
     }
 }
 

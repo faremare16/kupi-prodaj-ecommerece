@@ -33,10 +33,7 @@ export class ProfileComponent implements OnInit{
               private userService: UserService){}
 
   loadUserProfile(){
-    const token=localStorage.getItem('authToken');
-    const headers=new HttpHeaders({ 'Authorization': `Bearer ${token}`});
-
-    this.http.get<User>(`${environment.apiUrl}/users/me`, { headers }).subscribe({
+    this.http.get<User>(`${environment.apiUrl}/users/me`).subscribe({
       next: (data)=>{
         this.user=data; 
         this.editData={ ...data } as Partial<User>;
@@ -95,9 +92,6 @@ export class ProfileComponent implements OnInit{
   }
 
   saveProfile(){
-    const token=localStorage.getItem('authToken');
-    const headers=new HttpHeaders({ 'Authorization': `Bearer ${token}`});
-
     const formData=new FormData();
     formData.append('username', this.editData.username || '');
     formData.append('email', this.editData.email || '');

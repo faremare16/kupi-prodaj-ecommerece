@@ -9,7 +9,7 @@
       <a class="nav-link text-secondary fw-medium px-2 rounded-3" routerLink="/add-item" routerLinkActive="active text-light bg-dark">Add item</a>
 
       <!-- Prikazuje se samo ako je korisnik admin -->
-      <li *ngIf="authService.isAdmin()">
+      <li *ngIf="isAdmin" class="list-unstyled">
         <a [routerLink]="['/admin']" style="color: #ff4757; font-weight: bold; text-transform: uppercase; background-color: rgba(255, 71, 87, 0.1); padding: 5px 10px; border-radius: 4px; border: 1px solid #ff4757; text-decoration: none; display: inline-block; cursor: pointer;">
           🛡️ Admin Panel
         </a>
@@ -19,7 +19,6 @@
     <!-- Profile & Dropdown Section -->
     <div class="navbar-profile position-relative" *ngIf="isLoggedIn()">
       
-      <!-- Profile Circle -->
       <!-- Profile Circle -->
       <div 
         class="profile-circle rounded-circle border border-secondary overflow-hidden d-flex align-items-center justify-content-center bg-success text-white fw-bold shadow-sm" 
@@ -44,13 +43,14 @@
           My profile
         </a>
         
-        <!-- DODANO: My products -->
+        <!-- My products -->
         <a routerLink="/my-product-list" class="dropdown-item text-light rounded-3 py-2 px-3 mb-1 text-decoration-none d-block" (click)="dropdownOpen = false">
           My products
         </a>
         
         <div class="dropdown-divider border-secondary opacity-25 my-1"></div>
         
+        <!-- Logout poziva funkciju umjesto rute -->
         <button class="dropdown-item text-danger rounded-3 py-2 px-3 bg-transparent border-0 w-100 text-start" (click)="logout()">
           Logout
         </button>

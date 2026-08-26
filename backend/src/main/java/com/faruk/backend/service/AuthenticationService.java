@@ -29,7 +29,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     // registracija
-    public AuthenticationResponse register(RegisterRequest registerRequest) {
+    public String register(RegisterRequest registerRequest) {
 
         Role role = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Role Not Found"));
@@ -49,11 +49,10 @@ public class AuthenticationService {
         userRepository.save(user);
 
         // kreira novi jwt token za tog korisnika
-        var JwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(JwtToken);
+        return jwtService.generateToken(user);
     }
 
-    public AuthenticationResponse login(AuthenticationRequest request) {
+    public String login(AuthenticationRequest request) {
 
         // provjerava email i lozinku preko Authentication menager
         authenticationManager.authenticate(
@@ -67,7 +66,6 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(()->new RuntimeException("User not found"));
 
-        var jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+        return jwtService.generateToken(user);
     }
 }

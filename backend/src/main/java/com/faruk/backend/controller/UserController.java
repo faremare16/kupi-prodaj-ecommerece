@@ -3,6 +3,7 @@ package com.faruk.backend.controller;
 import com.faruk.backend.dto.UserResponseDto;
 import com.faruk.backend.entity.User;
 import com.faruk.backend.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +53,8 @@ public class UserController {
             @RequestParam("username") String username,
             @RequestParam("email") String email,
             @RequestParam("phoneNumber") String phoneNumber,
-            @RequestParam(value="file", required = false) MultipartFile file) {
+            @RequestParam(value="file", required = false) MultipartFile file,
+            HttpServletResponse response) {
 
         String currentUsername=authentication.getName();
 
@@ -62,7 +64,7 @@ public class UserController {
 
         System.out.println("PRIMLJEN FAJL NA BACKENDU: " + (file != null ? file.getOriginalFilename() + " (Veličina: " + file.getSize() + " bajtova)" : "FAJL JE NULL"));
 
-        UserResponseDto updatedUser=userService.updateUser(currentUsername, username, email, phoneNumber, file);
+        UserResponseDto updatedUser=userService.updateUser(currentUsername, username, email, phoneNumber, file, response);
         return ResponseEntity.ok(updatedUser);
     }
 }

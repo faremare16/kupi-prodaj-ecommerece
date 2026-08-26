@@ -13,10 +13,6 @@ export class CategoryService {
     constructor(private http: HttpClient){}
 
     getCategories(): Observable<any[]>{
-        const token=localStorage.getItem('authToken');
-        const headers=new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-        return this.http.get<any[]>(this.apiUrl, { headers });
+        return this.http.get<any[]>(this.apiUrl);
     }
 }

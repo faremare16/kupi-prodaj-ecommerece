@@ -42,17 +42,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
+        String jwt=null;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        // trazenje JWT token-a u kolacicima umjesto u authorization headers
+        if (request.getCookies() != null) {
+            for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // ako nema tokena u kolacicu zahtjev ide dalje
+        if(jwt==null){
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
-        userEmail= jwtService.extractUsername(jwt);
+        final String userEmail = jwtService.extractUsername(jwt);
 
         // ako email postoji a jos uvijek korisnik nije prijavljen
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -64,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         userDetails, null, userDetails.getAuthorities()
                 );
 
-                authentication.setDetails(new WebAuthenticationDetailsSource());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

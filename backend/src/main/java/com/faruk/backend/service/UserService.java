@@ -3,6 +3,9 @@ package com.faruk.backend.service;
 import com.faruk.backend.dto.UserResponseDto;
 import com.faruk.backend.entity.User;
 import com.faruk.backend.repository.UserRepository;
+import com.faruk.backend.security.JwtService;
+import io.jsonwebtoken.Jwt;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,11 +28,14 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final ImgBbService imgBbService;
+    private final JwtService jwtService;
 
     public UserService(UserRepository userRepository,
-                       ImgBbService imgBbService) {
+                       ImgBbService imgBbService,
+                       JwtService jwtService) {
         this.userRepository = userRepository;
         this.imgBbService = imgBbService;
+        this.jwtService=jwtService;
     }
 
     public UserResponseDto getUserProfile(String username){
@@ -66,7 +72,7 @@ public class UserService implements UserDetailsService {
         userRepository.delete(user);
     }
 
-    public UserResponseDto updateUser( String currentUsername, String username ,String email, String phoneNumber, MultipartFile file){
+    public UserResponseDto updateUser( String currentUsername, String username ,String email, String phoneNumber, MultipartFile file, HttpServletResponse response){
         User user = userRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -96,6 +102,16 @@ public class UserService implements UserDetailsService {
         }
 
         User savedUser = userRepository.save(user);
+
+        String newToken = jwtService.generateToken(savedUser);
+
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("jwt", newToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(cookie);
+
         return mapUserToDto(savedUser);
     }
 

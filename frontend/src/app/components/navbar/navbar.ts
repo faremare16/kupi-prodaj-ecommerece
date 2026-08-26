@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/authservice';
@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit{
   userProfileImage: string  | null=null;
   isLoading: boolean=true;
   editData: Partial<User>={};
+  isAdmin: boolean=false;
 
   constructor(private router: Router, 
               private cdr: ChangeDetectorRef,
@@ -25,33 +26,35 @@ export class NavbarComponent implements OnInit{
               public authService: AuthService){}
 
   ngOnInit(): void {
-    if(this.isLoggedIn()){
-      this.loadUserProfile();
-    }
+    this.loadUserProfile();
   }
 
   loadUserProfile(){
-    const token=localStorage.getItem('authToken');
-    const headers=new HttpHeaders({ 'Authorization': `Bearer ${token}`});
-
-    this.http.get<any>(`${environment.apiUrl}/users/me`,{ headers }).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/users/me`, { withCredentials: true }).subscribe({
       next: (data)=>{
-        this.user=data as User; 
-        this.editData={ ...data } as Partial<User>;
+        this.user = data as User; 
+        this.editData = { ...data } as Partial<User>;
 
-        // OVO TI JE NEDOSTAJALO:
+        // Provjeravamo da li korisnik ima ulogu admina
+        const roles = data.roles || [];
+        this.isAdmin = roles.some((role: any) => 
+          typeof role === 'string' ? role === 'ROLE_ADMIN' : role.name === 'ROLE_ADMIN'
+        );
+
         if (data && data.profileImageUrl) {
           this.userProfileImage = data.profileImageUrl.startsWith('http')
             ? data.profileImageUrl
             : environment.apiUrl.replace('/api/v1', '') + data.profileImageUrl;
         }
 
-        this.isLoading=false;
+        this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (err)=>{
-        console.log('Error while loading user info.', err);
-        this.isLoading=false;
+        console.log('Korisnik nije prijavljen ili je sesija istekla.', err);
+        this.user = null;
+        this.isAdmin = false;
+        this.isLoading = false;
         this.cdr.detectChanges();
       }
     });
@@ -59,8 +62,7 @@ export class NavbarComponent implements OnInit{
 
 
   isLoggedIn(): boolean{
-    const token = localStorage.getItem('authToken');
-    return !!token && token !== 'undefined' && token !== 'null';
+    return this.user!==null;
   }
 
   toggleDropdown(){
@@ -71,10 +73,18 @@ export class NavbarComponent implements OnInit{
     return 'FH';
   }
 
-  logout(){
-    localStorage.removeItem('authToken');
-    this.dropdownOpen=false;
-    this.router.navigate(['/login']);
-    this.cdr.detectChanges
+  logout() {
+  this.http.post(`${environment.apiUrl}/auth/logout`, {}, { withCredentials: true })
+    .subscribe({
+      next: () => {
+        this.dropdownOpen = false; 
+        
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Logout error', err);
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }
