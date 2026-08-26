@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class ImgBbService {
 
-    @Value("${imgbb.api.key}")
+    @Value("${imgbb.api.key:${IMGBB_API_KEY:}}")
     private String apiKey;
 
     private final String IMGBB_URL = "https://api.imgbb.com/1/upload?key=";
