@@ -70,7 +70,16 @@
 
         <!-- Sekcija sa informacijama o korisniku / prodavaču -->
         <div class="mt-auto bg-dark border border-secondary rounded-4 p-3">
-          <h6 class="fw-bold text-light mb-3">👤 Seller Information</h6>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h6 class="fw-bold text-light mb-0">👤 Seller Information</h6>
+            
+            <!-- Dugme za Message prilagođeno dizajnu -->
+            <button class="btn btn-success btn-sm rounded-pill px-4 fw-semibold shadow-sm"
+                    style="background-color: #238636; border-color: #2ea043;"
+                    (click)="openChat(product.user?.username)">
+              💬 Message Seller
+            </button>
+          </div>
           
           <div class="d-flex flex-column gap-2 small">
             <div class="text-light">
@@ -93,10 +102,3 @@
             </div>
           </div>
         </div>
-
-      </div>
-    </div>
-
-  </div>
-
-</div>

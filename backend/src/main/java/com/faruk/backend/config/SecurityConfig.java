@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Auth
-                        .requestMatchers("/api/v1/auth/**", "/error").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/error", "/ws/**").permitAll()
 
                         // Public product/category GET
                         .requestMatchers(
@@ -56,7 +56,7 @@ public class SecurityConfig {
                                 "/uploads/**"
                         ).permitAll()
 
-                        // Everything else requires authentication
+                        // sve ostalo zahtjeva authentication
                         .anyRequest().authenticated()
                 )
 

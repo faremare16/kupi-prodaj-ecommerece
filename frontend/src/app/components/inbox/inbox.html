@@ -1,0 +1,36 @@
+<div class="container py-5">
+  <h2 class="text-white mb-4">Messages / Inbox</h2>
+
+  <!-- Učitavanje -->
+  <div *ngIf="isLoading" class="text-secondary">Loading conversations...</div>
+
+  <!-- Ako nema razgovora -->
+  <div *ngIf="!isLoading && conversations.length === 0" class="text-secondary">
+    No messages yet. Start a conversation from a product listing!
+  </div>
+
+  <!-- Lista razgovora -->
+  <div class="list-group bg-black border border-secondary rounded-4 overflow-hidden" *ngIf="!isLoading && conversations.length > 0">
+    <div 
+      *ngFor="let conv of conversations" 
+      [routerLink]="['/chat', conv.username]"
+      class="list-group-item list-group-item-action bg-black text-white border-secondary d-flex align-items-center gap-3 p-3"
+      style="cursor: pointer; transition: background 0.2s;">
+      
+      <!-- Profilna slika -->
+      <img 
+        [src]="conv.profileImageUrl ? conv.profileImageUrl : 'default-avatar.png'" 
+        alt="Avatar" 
+        class="rounded-circle object-fit-cover border border-secondary"
+        style="width: 50px; height: 50px;"
+      />
+
+      <!-- Korisničko ime -->
+      <div class="d-flex flex-column">
+        <h5 class="mb-1 text-success fw-bold">&#64;{{ conv.username }}</h5>
+        <span class="text-secondary small">Click to open chat</span>
+      </div>
+
+    </div>
+  </div>
+</div>

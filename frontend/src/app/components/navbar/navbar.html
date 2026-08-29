@@ -5,11 +5,16 @@
     <a class="navbar-brand fw-bold text-success fs-4 text-decoration-none" routerLink="/product-list">KupiProdaj</a>
 
     <!-- Navigation Links -->
-    <div class="navbar-nav flex-row gap-4 ms-4 me-auto">
+    <div class="navbar-nav flex-row align-items-center gap-3 ms-4 me-auto">
       <a class="nav-link text-secondary fw-medium px-2 rounded-3" routerLink="/add-item" routerLinkActive="active text-light bg-dark">Add item</a>
 
+      <!-- 💬 Inbox / Poruke link (Prikazuje se samo ulogovanima) -->
+      <a *ngIf="isLoggedIn()" class="nav-link text-secondary fw-medium px-2 rounded-3 d-flex align-items-center gap-1" routerLink="/inbox" routerLinkActive="active text-light bg-dark">
+        💬 Messages
+      </a>
+
       <!-- Prikazuje se samo ako je korisnik admin -->
-      <li *ngIf="isAdmin" class="list-unstyled">
+      <li *ngIf="isAdmin" class="list-unstyled mb-0">
         <a [routerLink]="['/admin']" style="color: #ff4757; font-weight: bold; text-transform: uppercase; background-color: rgba(255, 71, 87, 0.1); padding: 5px 10px; border-radius: 4px; border: 1px solid #ff4757; text-decoration: none; display: inline-block; cursor: pointer;">
           🛡️ Admin Panel
         </a>

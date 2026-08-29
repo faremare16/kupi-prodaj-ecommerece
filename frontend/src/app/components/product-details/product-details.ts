@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { ProductService } from '../../services/product';
 
 @Component({
@@ -15,9 +15,10 @@ export class ProductDetailsComponent implements OnInit{
   isLoading: boolean=true;
 
   constructor(
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
     private productService: ProductService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -25,7 +26,7 @@ export class ProductDetailsComponent implements OnInit{
     }
 
     loadProductDetails(){
-      const id=Number(this.router.snapshot.paramMap.get('id'));
+      const id=Number(this.route.snapshot.paramMap.get('id'));
       if(id){
         this.productService.getProductById(id).subscribe({
           next:(data)=>{
@@ -40,6 +41,11 @@ export class ProductDetailsComponent implements OnInit{
           }
         })
       }
-
     }
+
+    openChat(username: string) {
+    if (username) {
+      this.router.navigate(['/chat', username]);
+    }
+  }
 }

@@ -1,0 +1,28 @@
+/* Prilagođeni Scrollbar za mračnu temu */
+.chat-history-box::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-history-box::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+
+.chat-history-box::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 10px;
+}
+
+.chat-history-box::-webkit-scrollbar-thumb:hover {
+  background: #8b949e;
+}
+
+/* Zadržavamo usklađenost sa zelenim GitHub/Dark dugmadima */
+.btn-success {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-success:hover {
+  background-color: #2ea043 !important;
+  border-color: #3fb950 !important;
+  transform: translateY(-1px);
+}
